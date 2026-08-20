@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新品破零全链路实操指南</title>
+<style>
+:root {
+  --primary: #C8102E;
+  --primary-dark: #8B0000;
+  --gold: #D4A017;
+  --gold-light: #F0C75E;
+  --bg: #FFF8F0;
+  --card-bg: #FFFFFF;
+  --text: #2C2C2C;
+  --text-light: #666;
+  --border: #E8D5C4;
+  --green: #2E7D32;
+  --orange: #E65100;
+  --blue: #1565C0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  padding-top: 36px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+}
+/* 顶部标题区 */
+.header {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--gold) 100%);
+  padding: 50px 20px 40px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0L0 30h60z' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E");
+}
+.header h1 {
+  font-size: 2.4em;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  margin-bottom: 10px;
+}
+.header .subtitle {
+  font-size: 1.1em;
+  opacity: 0.92;
+  letter-spacing: 1px;
+}
+.header .tag-line {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 6px 20px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 25px;
+  font-size: 0.9em;
+  backdrop-filter: blur(4px);
+}
+/* 导航栏 */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--card-bg);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 12px 20px;
+  flex-wrap: wrap;
+}
+.nav a {
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.9em;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 20px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.nav a:hover {
+  background: var(--primary);
+  color: #fff;
+  transform: translateY(-2px);
+}
+/* 主容器 */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+/* 阶段区块 */
+.phase {
+  margin-bottom: 50px;
+}
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+.phase-num {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(200,16,46,0.35);
+}
+.phase-title h2 {
+  font-size: 1.5em;
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+.phase-title .phase-desc {
+  font-size: 0.9em;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+.phase-gold-line {
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, transparent 100%);
+  border-radius: 2px;
+  margin-bottom: 25px;
+}
+/* 卡片 */
+.card {
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--primary);
+  transition: box-shadow 0.3s;
+}
+.card:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+.card-gold { border-left-color: var(--gold); }
+.card-green { border-left-color: var(--green); }
+.card-blue { border-left-color: var(--blue); }
+.card-orange { border-left-color: var(--orange); }
+.card-title {
+  font-size: 1.15em;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-gold .card-title { color: #8B6914; }
+.card-green .card-title { color: var(--green); }
+.card-blue .card-title { color: var(--blue); }
+.card-orange .card-title { color: var(--orange); }
+.card-title .icon {
+  font-size: 1.2em;
+}
+/* 列表 */
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+.card ul li {
+  padding: 8px 0 8px 28px;
+  position: relative;
+  font-size: 0.95em;
+}
+.card ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 8px;
+  color: var(--primary);
+  font-weight: bold;
+}
+.card-gold ul li::before { color: var(--gold); }
+.card-green ul li::before { color: var(--green); }
+.card-blue ul li::before { color: var(--blue); }
+.card-orange ul li::before { color: var(--orange); }
+.card ul li strong {
+  color: var(--primary-dark);
+}
+.card-gold ul li strong { color: #8B6914; }
+.card-green ul li strong { color: var(--green); }
+.card-blue ul li strong { color: var(--blue); }
+.card-orange ul li strong { color: var(--orange); }
+/* 表格 */
+.table-wrap {
+  overflow-x: auto;
+  margin: 15px 0;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+th {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #fff;
+  padding: 12px 15px;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+td {
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) td {
+  background: #FAF5F0;
+}
+tr:hover td {
+  background: #FFF0E0;
+}
+td strong {
+  color: var(--primary);
+}
+/* 提示框 */
+.tip-box {
+  background: linear-gradient(135deg, #FFF8E1 0%, #FFF3CD 100%);
+  border: 2px solid var(--gold-light);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin: 15px 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.tip-box .tip-icon {
+  font-size: 1.5em;
+  flex-shrink: 0;
+}
+.tip-box .tip-content {
+  font-size: 0.92em;
+  color: #5D4037;
+}
+.tip-box .tip-content strong {
+  color: var(--primary-dark);
+}
+/* 公式框 */
+.formula-box {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff;
+  border-radius: 12px;
+  padding: 20px 25px;
+  margin: 15px 0;
+  text-align: center;
+}
+.formula-box .formula-label {
+  font-size: 0.85em;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+.formula-box .formula {
+  font-size: 1.15em;
+  font-weight: 600;
+}
+.formula-box .formula span {
+  color: var(--gold-light);
+}
+/* 时间线 */
+.timeline {
+  display: flex;
+  gap: 0;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+.timeline-item {
+  flex: 1;
+  min-width: 160px;
+  text-align: center;
+  position: relative;
+  padding: 0 5px;
+}
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+}
+.timeline-item:last-child::after { display: none; }
+.timeline-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85em;
+  margin: 0 auto 10px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(200,16,46,0.3);
+}
+.timeline-item:nth-child(2) .timeline-dot { background: var(--gold); box-shadow: 0 2px 8px rgba(212,160,23,0.3); }
+.timeline-item:nth-child(3) .timeline-dot { background: var(--green); box-shadow: 0 2px 8px rgba(46,125,50,0.3); }
+.timeline-item:nth-child(4) .timeline-dot { background: var(--blue); box-shadow: 0 2px 8px rgba(21,101,192,0.3); }
+.timeline-day {
+  font-size: 0.85em;
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.timeline-goal {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--text);
+}
+/* 高亮标签 */
+.highlight-tag {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 15px;
+  font-size: 0.82em;
+  font-weight: 600;
+  margin: 2px 3px;
+}
+.tag-red { background: #FFEBEE; color: var(--primary); }
+.tag-gold { background: #FFF8E1; color: #8B6914; }
+.tag-green { background: #E8F5E9; color: var(--green); }
+.tag-blue { background: #E3F2FD; color: var(--blue); }
+.tag-orange { background: #FFF3E0; color: var(--orange); }
+/* 双栏布局 */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 768px) {
+  .two-col { grid-template-columns: 1fr; }
+}
+/* 小标题 */
+.sub-title {
+  font-size: 1em;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 15px 0 10px;
+  padding-left: 12px;
+  border-left: 3px solid var(--gold);
+}
+/* 口诀框 */
+.slogan-box {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #fff;
+  border-radius: 12px;
+  padding: 20px 25px;
+  margin: 15px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.slogan-box::before {
+  content: '""';
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  font-size: 4em;
+  opacity: 0.1;
+}
+.slogan-box .slogan {
+  font-size: 1.1em;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.slogan-box .slogan-sub {
+  font-size: 0.88em;
+  opacity: 0.85;
+  margin-top: 8px;
+}
+/* 底部 */
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--primary-dark);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.88em;
+}
+.footer .footer-gold {
+  color: var(--gold-light);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+/* 锚点偏移 */
+.anchor { scroll-margin-top: 70px; }
+
+/* 合规说明横幅 - 固定在页面顶部 */
+.compliance-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  background: linear-gradient(90deg, #8B0000 0%, #B71C1C 50%, #8B0000 100%);
+  color: #FFD700;
+  text-align: center;
+  padding: 6px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.compliance-banner .icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+</style>
+</head>
+<body>
+<!-- 合规说明横幅 -->
+<div class="compliance-banner">
+  <span class="icon">⚠️</span>
+  <span>内容仅供参考，不构成任何法律意见或建议</span>
+</div>
+
+
+<!-- ====== 顶部标题 ====== -->
+<div class="header">
+  <h1>🔥 新品破零全链路实操指南</h1>
+  <div class="subtitle">从上架前打底到长期动销维稳 · 四步走通新品破零全流程</div>
+  <div class="tag-line">动销核心公式：流量 × CTR × 转化率 × 价格竞争力 ÷ 竞品数量</div>
+</div>
+
+<!-- ====== 导航栏 ====== -->
+<div class="nav">
+  <a href="#phase1">第一步：上架前打底</a>
+  <a href="#phase2">第二步：0-7天冷启动</a>
+  <a href="#phase3">第三步：7-14天调价</a>
+  <a href="#phase4">第四步：长期维稳</a>
+  <a href="#formula">破零定价模型</a>
+  <a href="#roas-all">ROAS全策略</a>
+  <a href="#timeline">动销时间线</a>
+</div>
+
+<!-- ====== 主容器 ====== -->
+<div class="container">
+
+<!-- ========================================== -->
+<!-- 第一步：上架前打底 -->
+<!-- ========================================== -->
+<div class="phase" id="phase1">
+  <div class="anchor"></div>
+  <div class="phase-header">
+    <div class="phase-num">1</div>
+    <div class="phase-title">
+      <h2>上架前打底：避免先天滞销</h2>
+      <div class="phase-desc">精细化选品 + 合规定价 + 标准化优化，三管齐下筑牢基础</div>
+    </div>
+  </div>
+  <div class="phase-gold-line"></div>
+
+  <!-- 精细化选品 -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🎯</span> 精细化选品测款</div>
+    <ul>
+      <li><strong>方向获取</strong>：平台稀缺款 / 市场需求款 / 企划方向等</li>
+      <li><strong>差异化改良</strong>：梳理竞品差评，从材质、功能、包装三个维度做差异化改良，避开同质化内卷</li>
+      <li><strong>精铺策略</strong>：每周精铺 <strong>3-5 款</strong>，放弃海量铺货模式，集中店铺权重</li>
+      <li><strong>选品自检</strong>：确认产品有搜索热度（前台搜索量验证）、有利润空间（毛利 60% 以内）、有差异化卖点（对比 TOP10 至少 1 个维度不同）</li>
+    </ul>
+  </div>
+
+  <!-- 定价合规 -->
+  <div class="card card-gold">
+    <div class="card-title"><span class="icon">💰</span> 定价合规防断流</div>
+    <ul>
+      <li><strong>成本核算</strong>：精确核算产品成本 + 物流 + 仓储 + 人工，确保定价有利润空间</li>
+      <li><strong>对标定价</strong>：定价对标前 10 名竞品，毛利建议控制在 <strong>60% 以内</strong></li>
+      <li><strong>申报价竞争力自检</strong>：新品 C 端售价 ≤ TOP10 中位数 × 0.90，确保价格竞争力</li>
+      <li><strong>异常处理</strong>：出现流量异常先自查申诉，申诉不过找运营跟进</li>
+    </ul>
+    <div class="tip-box">
+      <span class="tip-icon">💡</span>
+      <div class="tip-content">
+        <strong>申报价预留比例参考：</strong>售后 5% + 活动 6% + 广告 4% + 毛利 15% = 综合预留约 30%。即申报价 = 成本 ÷ (1 - 30%) ≈ 成本 × 1.43。长裤品类售后率约 5%，需在定价中预留售后成本。
+      </div>
+    </div>
+  </div>
+
+  <!-- 标准化优化 -->
+  <div class="card card-blue">
+    <div class="card-title"><span class="icon">📋</span> 标准化优化（决定曝光 + 点击）</div>
+    
+    <div class="sub-title">标题公式</div>
+    <div class="formula-box">
+      <div class="formula-label">标题结构</div>
+      <div class="formula" style="font-size: 0.95em; line-height: 2.2;"><span>品牌/节日活动</span> + <span>规格（若有）</span> + <span>人群</span> + <span>品类</span> + <span>风格/功能/图案/版型</span> + <span>季节</span> + <span>细节/面料/颜色</span> + <span>场景词</span></div>
+    </div>
+    <ul>
+      <li>用前台高热度词，杜绝中式机翻</li>
+      <li>中文字数 22-60 字，英文单词数 12-40 词；过短→关键词覆盖不足，过长→搜索引擎截断、可读性下降</li>
+      <li>类目爆款关键词和当期搜索关键词可查看类目集合页</li>
+    </ul>
+
+    <div class="sub-title">主图推荐结构（6 张图）</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>图位</th><th>类型</th><th>核心要求</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>第 1 张</td><td><strong>白底图</strong></td><td>纯净白底，产品完整展示，无水印无文字</td></tr>
+          <tr><td>第 2 张</td><td><strong>场景图</strong></td><td>模特上身实拍，展示穿着效果与风格</td></tr>
+          <tr><td>第 3 张</td><td><strong>尺寸规格</td><td>详细尺码表，含腰围/臀围/裤长等关键数据</td></tr>
+          <tr><td>第 4 张</td><td><strong>功能卖点</strong></td><td>核心卖点可视化展示（口袋/弹力/面料等）</td></tr>
+          <tr><td>第 5 张</td><td><strong>细节图</strong></td><td>走线/面料纹理/五金件等品质细节</td></tr>
+          <tr><td>第 6 张</td><td><strong>补充场景</strong></td><td>多色展示 / 搭配建议 / 包装展示</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li>尽量上传短视频，提升搜索权重与转化率</li>
+      <li>全部必填属性完整填写，补充材质、认证、尺寸等参数</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 第二步：0-7天冷启动破零 -->
+<!-- ========================================== -->
+<div class="phase" id="phase2">
+  <div class="anchor"></div>
+  <div class="phase-header">
+    <div class="phase-num">2</div>
+    <div class="phase-title">
+      <h2>上架 0-7 天：冷启动破零</h2>
+      <div class="phase-desc">流量加速 + 报活动 + 快速破零激活动销 + 履约兜底</div>
+    </div>
+  </div>
+  <div class="phase-gold-line"></div>
+
+  <!-- 动销五步法 -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🚀</span> 动销五步法</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">01</div>
+        <div class="timeline-day">Day 1</div>
+        <div class="timeline-goal">上架占位</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">02</div>
+        <div class="timeline-day">Day 7</div>
+        <div class="timeline-goal">破零冲量</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">03</div>
+        <div class="timeline-day">Day 21</div>
+        <div class="timeline-goal">放量爬坡</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">04</div>
+        <div class="timeline-day">Day 60</div>
+        <div class="timeline-goal">爆款稳定</div>
+      </div>
+    </div>
+    <ul>
+      <li><strong>上架占位</strong>：完善所有必填属性、上传 6 张图 + 视频，确保搜索权重最大化</li>
+      <li><strong>破零冲量</strong>：广告投放，ROAS 设置小于等于 3，跑曝光，测数据</li>
+      <li><strong>评价积累</strong>：好评有礼引导评价，积累优质评价</li>
+      <li><strong>活动叠加</strong>：有曝光后叠加大促和新品冷启活动，获取多渠道曝光</li>
+      <li><strong>多件装裂变</strong>：开通 2pcs/3pcs 多件装，提升客单价和 GMV</li>
+    </ul>
+  </div>
+
+  <!-- 流量加速 -->
+  <div class="card card-orange">
+    <div class="card-title"><span class="icon">⚡</span> 流量加速小额投放</div>
+    <ul>
+      <li><strong>全域推广</strong>：开全域推广，ROAS 前 7 天建议设置 <strong>小于等于 3.0</strong>，跑曝光，测数据</li>
+      <li><strong>核心理念</strong>：提曝光，先打造爆款标签——低 ROAS 阶段积累的销量标签、评价、搜索排名，是后续自然流量增长的燃料</li>
+      <li><strong>详细 ROAS 策略</strong>：见下方 <a href="#roas-all" style="color: var(--orange); font-weight: 600;">ROAS 全策略板块</a></li>
+    </ul>
+  </div>
+
+  <!-- 报活动 -->
+  <div class="card card-green">
+    <div class="card-title"><span class="icon">📅</span> 报活动获取多渠道曝光</div>
+    <ul>
+      <li><strong>有曝光后</strong>：可叠加大促和新车冷启相关活动</li>
+      <li><strong>活动类型</strong>：限时秒杀 / 节日大促 / 品类日 / 新品专区等</li>
+      <li><strong>活动定价</strong>：破零期不报活动，爬坡期可报 9 折左右活动</li>
+      <li><strong>让利节奏</strong>：先小折扣测试转化，再逐步加大力度</li>
+    </ul>
+  </div>
+
+  <!-- 快速破零 -->
+  <div class="card card-gold">
+    <div class="card-title"><span class="icon">💥</span> 快速破零激活动销</div>
+    <div class="two-col">
+      <div>
+        <div class="sub-title">有加购无成交</div>
+        <ul>
+          <li>设置优惠券（满减 / 折扣券）</li>
+          <li>增加低折扣活动刺激转化</li>
+          <li>检查价格是否有竞争力</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub-title">完全无动销</div>
+        <ul>
+          <li>加大广告投放力度</li>
+          <li>优化主图提升 CTR</li>
+          <li>检查标题是否覆盖热搜词</li>
+          <li>核对类目是否放错</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 履约 -->
+  <div class="card card-blue">
+    <div class="card-title"><span class="icon">📦</span> 履约 & 库存兜底</div>
+    <ul>
+      <li>保证备货充足，杜绝断码断货，库存不稳直接影响流量稳定</li>
+      <li>关注 JIT 转备货比例，保持 <strong>20% 以上</strong></li>
+      <li>关注商品店铺评分、到仓及时率等指标，减少 JIT 商品突然限制加库存</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 第三步：7-14天数据诊断+调价 -->
+<!-- ========================================== -->
+<div class="phase" id="phase3">
+  <div class="anchor"></div>
+  <div class="phase-header">
+    <div class="phase-num">3</div>
+    <div class="phase-title">
+      <h2>7-14 天：数据诊断 + 调价盘活</h2>
+      <div class="phase-desc">分数据对症下药 + 梯度调价稳利润 + 积累评价拉高转化</div>
+    </div>
+  </div>
+  <div class="phase-gold-line"></div>
+
+  <!-- 数据诊断 -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🔍</span> 分数据对症下药</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>问题表现</th><th>诊断方向</th><th>解决方案</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="highlight-tag tag-red">零曝光</span></td>
+            <td>标题无热搜词 / 类目放错</td>
+            <td>改标题补热搜词、核对类目（不要修改影响日常价要素的信息）</td>
+          </tr>
+          <tr>
+            <td><span class="highlight-tag tag-orange">有曝光低点击</span></td>
+            <td>主图吸引力不足</td>
+            <td>重做优化主图，测试不同封面图点击率</td>
+          </tr>
+          <tr>
+            <td><span class="highlight-tag tag-gold">高点击低转化</span></td>
+            <td>价格偏高 / 详情卖点弱</td>
+            <td>调价、优化详情卖点、参加好评有礼，短长期流量增长</td>
+          </tr>
+          <tr>
+            <td><span class="highlight-tag tag-blue">曝光突然变低</span></td>
+            <td>生命周期 / 流量异常</td>
+            <td>检查生命周期是否流量异常，若有及时解决</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 梯度调价 -->
+  <div class="card card-gold">
+    <div class="card-title"><span class="icon">📊</span> 梯度调价稳利润</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>链接类型</th><th>日销情况</th><th>调价策略</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>小爆款</strong></td>
+            <td>日销稳定出单</td>
+            <td>不动价稳住流量，守住核心出单链接</td>
+          </tr>
+          <tr>
+            <td><strong>已破零链接</strong></td>
+            <td>有稳定出单</td>
+            <td>逐步抬升利润，每次调整幅度 ≤ 5%</td>
+          </tr>
+          <tr>
+            <td><strong>持续滞销</strong></td>
+            <td>14 天不动销</td>
+            <td>适度降价清库存或下架止损</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 破零定价策略 -->
+  <div class="card card-orange" id="formula">
+    <div class="anchor"></div>
+    <div class="card-title"><span class="icon">🏷️</span> 破零定价策略（三阶段）</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>阶段</th><th>时间</th><th>申报价系数</th><th>策略说明</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>破零期</strong></td>
+            <td>Day 1-7</td>
+            <td><span class="highlight-tag tag-red">申报价 × 0.85</span></td>
+            <td>让利换量，快速破零，不考虑利润</td>
+          </tr>
+          <tr>
+            <td><strong>爬坡期</strong></td>
+            <td>Day 8-21</td>
+            <td><span class="highlight-tag tag-gold">申报价 × 0.92</span></td>
+            <td>小幅让利维持增速，同时开始关注 ROAS ≥ 3.0</td>
+          </tr>
+          <tr>
+            <td><strong>稳定期</strong></td>
+            <td>Day 22+</td>
+            <td><span class="highlight-tag tag-green">申报价 × 1.0</span></td>
+            <td>恢复正常申报价，稳利润，ROAS ≥ 5.0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tip-box">
+      <span class="tip-icon">💡</span>
+      <div class="tip-content">
+        <strong>多件装申报价定价公式：</strong>2pcs = 单件 × 1.7-1.9，3pcs = 单件 × 2.3-2.6，4pcs = 单件 × 3.0-3.4。多件装是提升客单价和 GMV 的有效手段，破零期即可开通。
+      </div>
+    </div>
+  </div>
+
+  <!-- 积累评价 -->
+  <div class="card card-green">
+    <div class="card-title"><span class="icon">⭐</span> 积累评价拉高转化</div>
+    <ul>
+      <li><strong>好评有礼</strong>：开启好评有礼活动，引导买家留评</li>
+      <li><strong>评分目标</strong>：链接评分稳住 <strong>4.6 分以上</strong>，避免低分断流</li>
+      <li><strong>评价数量</strong>：破零期持续积累评价，为后续转化做信任背书</li>
+      <li><strong>差评处理</strong>：及时回复差评，分析差评原因优化产品</li>
+    </ul>
+  </div>
+
+  <!-- 库存保障 -->
+  <div class="card card-blue">
+    <div class="card-title"><span class="icon">📦</span> 库存保障</div>
+    <ul>
+      <li>观测即将售罄 SKU，及时补货和转备货</li>
+      <li>注意店铺 JIT 转备货保持 <strong>20% 以上</strong></li>
+      <li>关注商品店铺评分、到仓及时率等，减少 JIT 商品突然限制加库存</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 第四步：长期动销维稳 -->
+<!-- ========================================== -->
+<div class="phase" id="phase4">
+  <div class="anchor"></div>
+  <div class="phase-header">
+    <div class="phase-num">4</div>
+    <div class="phase-title">
+      <h2>长期动销维稳策略</h2>
+      <div class="phase-desc">捆绑搭售 + 滞销处理 + 合规常态化 + 爆款延伸款开发</div>
+    </div>
+  </div>
+  <div class="phase-gold-line"></div>
+
+  <!-- 捆绑搭售 -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🔗</span> 捆绑搭售</div>
+    <ul>
+      <li>新品搭配店铺老爆款做捆绑套餐，共享流量，提升连带动销</li>
+      <li>多件装策略：2pcs / 3pcs / 4pcs 组合，提升客单价</li>
+      <li>跨品类搭配：裤子 + 上衣套装，覆盖更多消费场景</li>
+    </ul>
+  </div>
+
+  <!-- 滞销处理 -->
+  <div class="card card-orange">
+    <div class="card-title"><span class="icon">⚠️</span> 滞销链接处理</div>
+    <ul>
+      <li><strong>14 天不动销</strong>：判断款式不行直接下架，避免占用店铺动销率指标</li>
+      <li><strong>少量改版重测</strong>：可少量改图改标题重新上架测款</li>
+      <li><strong>清库存</strong>：适度降价清理库存，回笼资金</li>
+    </ul>
+  </div>
+
+  <!-- 合规 -->
+  <div class="card card-green">
+    <div class="card-title"><span class="icon">✅</span> 合规常态化</div>
+    <ul>
+      <li>补齐 EPR、知识产权，避免隐性降权干扰动销</li>
+      <li>定期检查商品信息合规性，确保持续符合平台规则</li>
+      <li>关注平台政策更新，及时调整运营策略</li>
+    </ul>
+  </div>
+
+  <!-- 爆款延伸款 -->
+  <div class="card card-gold">
+    <div class="card-title"><span class="icon">🌟</span> 爆款延伸款开发</div>
+    
+    <div class="sub-title">面料 / 材质延改</div>
+    <ul>
+      <li><strong>季节切换</strong>：夏季薄款 → 秋季针织/灯芯绒 → 冬季加绒/加厚</li>
+      <li><strong>功能面料</strong>：普通面料 → 冰丝凉感 / 速干排汗 / 防泼水</li>
+      <li><strong>质感升级</strong>：普通棉 → 精梳棉 / 天丝 / 莫代尔 / 仿麻 / 仿皮</li>
+      <li><strong>弹力延伸</strong>：无弹 → 微弹 → 高弹（运动 / 瑜伽裤方向）</li>
+    </ul>
+
+    <div class="sub-title">版型 / 廓形延改</div>
+    <ul>
+      <li><strong>裤型变化</strong>：直筒 ↔ 修身 ↔ 阔腿 ↔ 喇叭 ↔ 萝卜裤 ↔ 阔腿拖地</li>
+      <li><strong>腰型变化</strong>：中腰 ↔ 高腰 ↔ 低腰；松紧腰 ↔ 扣腰 ↔ 抽绳腰</li>
+      <li><strong>长度延伸</strong>：长裤 → 九分裤 → 七分裤 → 五分裤（同版型不同长度覆盖更多场景）</li>
+      <li><strong>裆型调整</strong>：常规裆 ↔ 落裆（更休闲松垮感）</li>
+    </ul>
+
+    <div class="sub-title">细节 / 工艺延改</div>
+    <ul>
+      <li><strong>口袋变化</strong>：侧插袋 → 斜插袋 → 立体贴袋 → 暗袋 → 无口袋</li>
+      <li><strong>腰头细节</strong>：加腰带环 → 弹力松紧 → 抽绳 → 装饰扣</li>
+      <li><strong>裤脚处理</strong>：平脚 → 毛边 → 开叉 → 收口/束脚 → 卷边</li>
+      <li><strong>工艺点缀</strong>：压褶 → 打揽 → 绗缝 → 做旧水洗 → 磨白</li>
+    </ul>
+
+    <div class="sub-title">颜色 / 花色延改</div>
+    <ul>
+      <li><strong>基础色扩展</strong>：黑/白/灰 → 卡其/藏青/军绿 → 莫兰迪色系 → 流行色</li>
+      <li><strong>花色延改</strong>：纯色 → 条纹 → 格纹 → 迷彩 → 扎染 → 印花/动物纹</li>
+      <li><strong>洗水效果</strong>：纯色 → 轻度水洗 → 中度做旧 → 重度破洞</li>
+    </ul>
+
+    <div class="sub-title">风格 / 场景延改</div>
+    <ul>
+      <li><strong>风格切换</strong>：通勤风 → 休闲风 → 运动风 → 户外风 → 街头潮牌风</li>
+      <li><strong>场景切分</strong>：日常穿着 → 办公通勤 → 运动健身 → 户外露营 → 家居休闲</li>
+      <li><strong>风格融合</strong>：运动休闲 / 工装机能 / 极简通勤</li>
+    </ul>
+
+    <div class="sub-title">人群 / 组合延改</div>
+    <ul>
+      <li><strong>性别延改</strong>：女装爆款引入男装</li>
+      <li><strong>套装延伸</strong>：单品裤 → 同面料外套套装 → 同色系上下装搭配</li>
+      <li><strong>系列化</strong>：单款 → 同系列多色多版型矩阵</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- ========================================== -->
+<!-- ROAS全策略（统一板块） -->
+<!-- ========================================== -->
+<div class="phase" id="roas-all">
+  <div class="anchor"></div>
+  <div class="phase-header">
+    <div class="phase-num" style="background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);">📊</div>
+    <div class="phase-title">
+      <h2 style="color: #1565C0;">ROAS 全策略：从破零到爆款</h2>
+      <div class="phase-desc">各阶段建议 → 破零期推广费区间 → 可等/不能等情况</div>
+    </div>
+  </div>
+  <div class="phase-gold-line"></div>
+
+  <!-- 各阶段ROAS建议 -->
+  <div class="card card-blue">
+    <div class="card-title"><span class="icon">📈</span> 各阶段 ROAS 建议与原因</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>阶段</th><th>时间</th><th>ROAS 建议</th><th>核心目标</th><th>原因</th><th>不达标后果</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>破零期</strong></td>
+            <td>Day 1-7</td>
+            <td><span class="highlight-tag tag-red">≤ 3.0</span></td>
+            <td>关注 ROAS 和消耗，单件广告成本建议控制在申报价 35% 以内</td>
+            <td>流量尚未稳定，需要用投放换曝光</td>
+            <td>ROAS &lt; 1.0（倒贴）或销量不增长且转化率 &lt; 1% 才必须优化</td>
+          </tr>
+          <tr>
+            <td><strong>爬坡期</strong></td>
+            <td>Day 8-21</td>
+            <td><span class="highlight-tag tag-gold">&gt; 3.0</span></td>
+            <td>验证产品可行性，自然流量开始起量</td>
+            <td>流量初步稳定，需要投放效率覆盖成本</td>
+            <td>推广费侵蚀利润，需优化关键词和主图</td>
+          </tr>
+          <tr>
+            <td><strong>稳定期</strong></td>
+            <td>Day 22-45</td>
+            <td><span class="highlight-tag tag-green">≥ 5.0</span></td>
+            <td>自然流量为主，推广费开始递减</td>
+            <td>自然流量占比提升，广告应作为放大器而非主力</td>
+            <td>利润率低于 15%，需减少无效投放</td>
+          </tr>
+          <tr>
+            <td><strong>爆款期</strong></td>
+            <td>Day 46+</td>
+            <td><span class="highlight-tag tag-blue">≥ 8.0</span></td>
+            <td>销量标签驱动免费流量，推广费最低</td>
+            <td>自然流量为主，广告仅为防御性投放</td>
+            <td>说明自然流量不足，需检查搜索权重和活动参与度</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 前提说明 -->
+  <div class="tip-box" style="background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%); border-color: #CE93D8;">
+    <span class="tip-icon">📌</span>
+    <div class="tip-content">
+      <strong>前提假设：</strong>申报价 ¥30，成本 ¥15，运费 ¥1，单件毛利 ¥14，不报活动，不算售后。以下推广费区间数据基于此前提计算。
+    </div>
+  </div>
+
+  <!-- 单件推广费区间 -->
+  <div class="card" style="border-left-color: #6A1B9A;">
+    <div class="card-title" style="color: #6A1B9A;"><span class="icon">💰</span> 破零期单件推广费区间分析</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>区间</th><th>单件推广费</th><th>对应 ROAS</th><th>单件净收益</th><th>判断</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background: #E8F5E9;">
+            <td><strong>理想区间</strong></td>
+            <td>¥8-10</td>
+            <td>3.0-3.75</td>
+            <td>¥4-6</td>
+            <td><span class="highlight-tag tag-green">☑ 推荐</span></td>
+          </tr>
+          <tr>
+            <td><strong>可接受</strong></td>
+            <td>¥10-12</td>
+            <td>2.5-3.0</td>
+            <td>¥2-4</td>
+            <td><span class="highlight-tag tag-gold">⚠ 可以</span></td>
+          </tr>
+          <tr style="background: #FFF3E0;">
+            <td><strong>红线</strong></td>
+            <td>¥14</td>
+            <td>2.14</td>
+            <td>¥0</td>
+            <td><span class="highlight-tag tag-orange">⚫ 盈亏平衡</span></td>
+          </tr>
+          <tr style="background: #FFEBEE;">
+            <td><strong>超限</strong></td>
+            <td>&gt; ¥14</td>
+            <td>&lt; 2.14</td>
+            <td>负数</td>
+            <td><span class="highlight-tag tag-red">❌ 亏钱</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tip-box">
+      <span class="tip-icon">💡</span>
+      <div class="tip-content">
+        <strong>建议：</strong>破零期单件推广费控制在 ¥8-12，对应 ROAS 2.5-3.75。单件广告成本建议控制在申报价 35% 以内。
+      </div>
+    </div>
+  </div>
+
+  <!-- 核心理念 -->
+  <div class="slogan-box" style="background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);">
+    <div class="slogan">🎯 提曝光，先打造爆款标签</div>
+    <div class="slogan-sub">低 ROAS 阶段积累的销量标签、评价、搜索排名，是后续自然流量增长的燃料</div>
+  </div>
+
+  <!-- 可等情况 -->
+  <div class="card card-green">
+    <div class="card-title"><span class="icon">✅</span> 可以等的情况（ROAS 1.5-3.0）</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>情况</th><th>条件</th><th>为什么可以等</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ROAS 1.5-3.0</td><td>Day 7 销量 ≥ 30 件</td><td>进度正常，等自然流量起来</td></tr>
+          <tr><td>ROAS 1.5-3.0</td><td>日均在涨</td><td>趋势向好，算法在收录</td></tr>
+          <tr><td>ROAS 1.5-3.0</td><td>推广转化率 ≥ 1.5%</td><td>产品能转化，只是量没起来</td></tr>
+          <tr><td>ROAS 1.5-3.0</td><td>加购率 ≥ 3%</td><td>有购买意愿，转化是时间问题</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 不能等情况 -->
+  <div class="card" style="border-left-color: #C62828;">
+    <div class="card-title" style="color: #C62828;"><span class="icon">🚨</span> 不能等的情况（必须立即处理）</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>情况</th><th>触发条件</th><th>马上做什么</th><th>能不能等</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background: #FFEBEE;">
+            <td><strong>ROAS &lt; 1.0</strong></td>
+            <td>推广费 &gt; 销售额</td>
+            <td>立即暂停推广或调高出价</td>
+            <td><span class="highlight-tag tag-red">❌ 不能等</span></td>
+          </tr>
+          <tr style="background: #FFEBEE;">
+            <td><strong>推广费烧太快</strong></td>
+            <td>Day 3 花完 60%+ 但销量 &lt; 20%</td>
+            <td>降出价 + 缩时段</td>
+            <td><span class="highlight-tag tag-red">❌ 不能等</span></td>
+          </tr>
+          <tr style="background: #FFEBEE;">
+            <td><strong>转化率 &lt; 0.5%</strong></td>
+            <td>有人看没人买</td>
+            <td>降价 + 重做主图</td>
+            <td><span class="highlight-tag tag-red">❌ 不能等</span></td>
+          </tr>
+          <tr style="background: #FFEBEE;">
+            <td><strong>销量在下降</strong></td>
+            <td>Day 4-7 &lt; Day 1-3</td>
+            <td>排查 + 加大推广</td>
+            <td><span class="highlight-tag tag-red">❌ 不能等</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 动销失败常见原因 -->
+<!-- ========================================== -->
+<div class="phase" id="timeline">
+  <div class="anchor"></div>
+  <div class="phase-header">
+    <div class="phase-num" style="background: linear-gradient(135deg, #E65100 0%, #BF360C 100%);">⚠</div>
+    <div class="phase-title">
+      <h2 style="color: #E65100;">动销失败常见原因与修正</h2>
+      <div class="phase-desc">破零失败的 6 大典型原因及对应解决方案</div>
+    </div>
+  </div>
+  <div class="phase-gold-line"></div>
+
+  <div class="card card-orange">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>失败原因</th><th>表现</th><th>修正方案</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>选品无差异</strong></td>
+            <td>同质化严重，价格战</td>
+            <td>从面料/版型/细节/颜色做差异化改良</td>
+          </tr>
+          <tr>
+            <td><strong>定价过高</strong></td>
+            <td>有曝光无转化</td>
+            <td>C端价 ≤ TOP10 中位数 × 0.90，破零期申报价让利</td>
+          </tr>
+          <tr>
+            <td><strong>主图吸引力差</strong></td>
+            <td>有曝光低点击（CTR &lt; 1%）</td>
+            <td>重做 6 张主图，参考 TOP10 竞品主图风格</td>
+          </tr>
+          <tr>
+            <td><strong>标题无热搜词</strong></td>
+            <td>零曝光 / 极低曝光</td>
+            <td>用前台高热度词重写标题，按公式：核心大词+属性词+规格+场景词</td>
+          </tr>
+          <tr>
+            <td><strong>库存断流</strong></td>
+            <td>有销量但断码断货</td>
+            <td>JIT转备货 ≥ 20%，提前备货避免断码</td>
+          </tr>
+          <tr>
+            <td><strong>评价太少/评分低</strong></td>
+            <td>转化率持续下降</td>
+            <td>好评有礼积累评价，评分维持 4.6+，及时处理差评</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box" style="background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); border-color: #66BB6A;">
+    <span class="tip-icon">📌</span>
+    <div class="tip-content">
+      <strong>核心原则：</strong>新品破零的核心是「流量 × CTR × 转化率 × 价格竞争力 ÷ 竞品数量」。任何一个环节断裂都会导致破零失败。上架前打好基础（选品+定价+优化），上架后快速冲量（广告+活动+优惠券），数据期精准诊断调价，长期坚持爆款延伸——四步走通，新品破零水到渠成。
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ====== 底部 ====== -->
+<div class="footer">
+  <div class="footer-gold">新品破零全链路实操指南</div>
+  <div>从上架前打底到长期动销维稳 · 四步走通新品破零全流程</div>
+</div>
+
+</body>
+</html>
